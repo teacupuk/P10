@@ -7,14 +7,14 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - db
+      - p10-db
     env_file:
       - .env
     networks:
       - app-network
 
   p10-db:
-    image: mysql:5.7
+    image: mysql:8
     container_name: p10-db
     env_file:
       - .env
