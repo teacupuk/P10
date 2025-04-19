@@ -64,8 +64,8 @@
                     <span class="fs-1 fw-bold">P10 Game</span>
                 </div>
                 <nav class="d-none d-md-flex gap-4 fs-3 fw-semibold">
-                    <a href="#" class="text-white text-decoration-none">Rules</a>
-
+                    <a href="/" class="text-white text-decoration-none">Leaderboard</a>
+                    <a href="/rules" class="text-white text-decoration-none">Rules</a>
                 </nav>
             </div>
         </div>

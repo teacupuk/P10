@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LeaderboardController::class, 'index'])->name('leaderboard');
+Route::view('/rules', 'rules')->name('rules');
 
 Route::get('/dashboard', [AdminController::class, 'index'])
     ->middleware(['auth', 'verified'])
