@@ -16,6 +16,7 @@ down:
 ## Build only the Laravel app container (reuses MySQL image)
 build:
 	docker-compose build $(PHP_SERVICE)
+	docker-compose up -d
 
 ## Rebuild the Laravel app container without cache
 rebuild:

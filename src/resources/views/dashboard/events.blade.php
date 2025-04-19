@@ -1,0 +1,43 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Manage Events') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-6">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            @foreach ($events as $event)
+                <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 mb-4">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex flex-col">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                {{ $event->name }}
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                {{ $event->date->format('F j, Y') }}
+                            </p>
+                        </div>
+
+                        <div class="flex flex-wrap gap-3 md:ml-auto">
+                            <a href="{{ route('dashboard.qualifying.edit', $event->id) }}"
+                               class="inline-block px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
+                                Edit Qualifying
+                            </a>
+
+                            <a href="{{ route('dashboard.predictions.edit', $event->id) }}"
+                               class="inline-block px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
+                                Edit Predictions
+                            </a>
+
+                            <a href="#"
+                               class="inline-block px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
+                                Edit Event
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</x-app-layout>
