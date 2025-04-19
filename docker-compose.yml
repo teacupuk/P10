@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  p10-web:
+    build: .
+    container_name: p10-web
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+  p10-db:
+    image: mysql:5.7
+    container_name: p10-db
+    env_file:
+      - .env
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
