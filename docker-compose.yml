@@ -8,8 +8,6 @@ services:
       - "80:80"
     depends_on:
       - p10-db
-    env_file:
-      - .env
     networks:
       - app-network
 

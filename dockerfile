@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.3-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -15,33 +15,33 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
+# Install Node.js (LTS) + npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+&& apt-get install -y nodejs
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
 
-# Create Laravel app in a clean temp directory
-WORKDIR /tmp
-RUN composer create-project --prefer-dist laravel/laravel laravel
+# Set working directory
+WORKDIR /var/www/html
 
-# Move Laravel into /var/www/html
-RUN rm -rf /var/www/html && mv laravel /var/www/html
+# Copy your full Laravel project from src/ into the container
+COPY src/ /var/www/html
 
-# Set correct permissions for Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-    
-# Copy nginx config
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache && \
+    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Copy Nginx config
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Copy shared .env into Laravel
-COPY .env /var/www/html/.env
-
-# Copy and set permissions for start script
+# Copy and enable start script
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Expose HTTP port
+# Expose port
 EXPOSE 80
 
-# Start Nginx and PHP-FPM
+# Start services
 CMD ["/start.sh"]
