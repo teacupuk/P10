@@ -6,31 +6,37 @@
     </x-slot>
 
     <div class="py-6">
-        <div class="max-w-3xl mx-auto bg-white dark:bg-gray-800 p-6 rounded shadow">
-            <form method="POST" action="{{ route('dashboard.qualifying.update', $event->id) }}">
-                @csrf
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 mb-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <form method="POST" action="{{ route('dashboard.qualifying.update', $event->id) }}">
+                        @csrf
 
-                @for ($i = 1; $i <= 20; $i++)
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Position {{ $i }}
-                        </label>
-                        <select name="positions[{{ $i }}]" class="form-select w-full dark:bg-gray-700 dark:text-white">
-                            <option value="">-- Select Driver --</option>
-                            @foreach ($drivers as $driver)
-                                <option value="{{ $driver->id }}"
-                                    @if(optional($qualifying->firstWhere('position', $i))->driver_id == $driver->id) selected @endif>
-                                    {{ $driver->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                @endfor
+                        @for ($i = 1; $i <= 20; $i++)
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Position {{ $i }}
+                                </label>
+                                <select name="positions[{{ $i }}]" class="form-select w-full dark:bg-gray-700 dark:text-white">
+                                    <option value="">-- Select Driver --</option>
+                                    @foreach ($drivers as $driver)
+                                        <option value="{{ $driver->id }}"
+                                            @if(optional($qualifying->firstWhere('position', $i))->driver_id == $driver->id) selected @endif>
+                                            {{ $driver->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endfor
 
-                <button type="submit" class="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-                    Save Qualifying
-                </button>
-            </form>
+                        <div class="flex justify-center mt-4">
+                            <button type="submit" class="px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
+                                Save and Calculate
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </x-app-layout>
