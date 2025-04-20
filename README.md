@@ -1,6 +1,6 @@
-# 🏁 P10 Game - F1 Team Predictor
+# 🏁 The P10 Game
 
-Welcome to the **P10 Game**, a fun Formula 1-themed team challenge where players predict who will qualify **P10** in every F1 race and sprint of the 2025 season!
+Welcome to the **P10 Game**, a fun challenge where players predict who will qualify **P10** for every F1 race and sprint of the 2025 season!
 
 ## 🎯 Game Objective
 
