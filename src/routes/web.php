@@ -28,7 +28,9 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::post('/dashboard/events/{event}/predictions', [AdminController::class, 'updatePredictions'])->name('dashboard.predictions.update');
     Route::get('/dashboard/events/{event}/edit', [AdminController::class, 'editEvent'])->name('dashboard.events.edit');
     Route::patch('/dashboard/events/{event}', [AdminController::class, 'updateEvent'])->name('dashboard.events.update');
-
+    Route::patch('/dashboard/events/{event}/archive', [AdminController::class, 'archiveEvent'])->name('dashboard.events.archive');
+    Route::post('/dashboard/events/{event}/restore', [AdminController::class, 'restoreEvent'])->name('dashboard.events.restore');
+    
     # === Players ===
     Route::get('/dashboard/players', [AdminController::class, 'players'])->name('dashboard.players');
     Route::get('/dashboard/players/{player}/edit', [AdminController::class, 'editPlayer'])->name('dashboard.players.edit');

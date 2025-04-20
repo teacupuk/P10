@@ -13,7 +13,11 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $upcomingEvents = Event::where('date', '>=', now())->orderBy('date')->take(3)->get();
+        $upcomingEvents = Event::where('date', '>=', now())
+            ->where('archived', false)
+            ->orderBy('date')
+            ->take(3)
+            ->get();
 
         $topPlayers = Player::withSum('predictions', 'points_awarded')
             ->orderByDesc('predictions_sum_points_awarded')
@@ -23,15 +27,40 @@ class AdminController extends Controller
         return view('dashboard', compact('upcomingEvents', 'topPlayers'));
     }
 
-    public function events()
+    public function events(Request $request)
     {
-        $events = \App\Models\Event::orderBy('date')->get();
-        return view('dashboard.events', compact('events'));
+        $search = $request->input('search');
+        $showArchived = $request->boolean('show_archived');
+
+        $events = Event::when($search, function ($query, $search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->when(!$showArchived, function ($query) {
+                return $query->where('archived', false);
+            })
+            ->orderBy('date')
+            ->get();
+
+        return view('dashboard.events', compact('events', 'search', 'showArchived'));
     }
 
     public function editEvent(Event $event)
     {
         return view('dashboard.events.edit', compact('event'));
+    }
+
+    public function archiveEvent(Event $event)
+    {
+        $event->update(['archived' => true]);
+
+        return redirect()->route('dashboard.events')->with('success', 'Event archived.');
+    }
+
+    public function restoreEvent(Event $event)
+    {
+        $event->update(['archived' => false]);
+
+        return redirect()->route('dashboard.events')->with('success', 'Event restored.');
     }
 
     public function updateEvent(Request $request, Event $event)

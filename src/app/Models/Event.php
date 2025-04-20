@@ -11,7 +11,8 @@ class Event extends Model
     protected $fillable = [
         'name',
         'date',
-        'is_sprint'
+        'is_sprint',
+        'archived',
     ];
 
     protected $casts = [
