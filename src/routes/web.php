@@ -20,11 +20,16 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+    # === Events ===
     Route::get('/events', [AdminController::class, 'events'])->name('dashboard.events');
     Route::get('/events/{event}/qualifying', [AdminController::class, 'editQualifying'])->name('dashboard.qualifying.edit');
     Route::post('/events/{event}/qualifying', [AdminController::class, 'updateQualifying'])->name('dashboard.qualifying.update');
     Route::get('/dashboard/events/{event}/predictions', [AdminController::class, 'editPredictions'])->name('dashboard.predictions.edit');
     Route::post('/dashboard/events/{event}/predictions', [AdminController::class, 'updatePredictions'])->name('dashboard.predictions.update');
+    Route::get('/dashboard/events/{event}/edit', [AdminController::class, 'editEvent'])->name('dashboard.events.edit');
+    Route::patch('/dashboard/events/{event}', [AdminController::class, 'updateEvent'])->name('dashboard.events.update');
+
+    # === Players ===
     Route::get('/dashboard/players', [AdminController::class, 'players'])->name('dashboard.players');
     Route::get('/dashboard/players/{player}/edit', [AdminController::class, 'editPlayer'])->name('dashboard.players.edit');
     Route::patch('/dashboard/players/{player}', [AdminController::class, 'updatePlayer'])->name('dashboard.players.update');

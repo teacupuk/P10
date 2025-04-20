@@ -30,7 +30,7 @@
                                 Edit Predictions
                             </a>
 
-                            <a href="#"
+                            <a href="{{ route('dashboard.events.edit', $event->id) }}#"
                                class="inline-block px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
                                 Edit Event
                             </a>

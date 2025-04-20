@@ -29,6 +29,28 @@ class AdminController extends Controller
         return view('dashboard.events', compact('events'));
     }
 
+    public function editEvent(Event $event)
+    {
+        return view('dashboard.events.edit', compact('event'));
+    }
+
+    public function updateEvent(Request $request, Event $event)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'date' => 'required|date',
+            'is_sprint' => 'nullable|boolean',
+        ]);
+
+        $event->update([
+            'name' => $request->input('name'),
+            'date' => $request->input('date'),
+            'is_sprint' => $request->boolean('is_sprint'),
+        ]);
+
+        return redirect()->route('dashboard.events')->with('success', 'Event updated.');
+    }
+
     public function editQualifying(Event $event)
     {
         $drivers = Driver::orderBy('name')->get();
