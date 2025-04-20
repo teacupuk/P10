@@ -15,7 +15,7 @@ class LeaderboardController extends Controller
             ->orderByDesc('predictions_sum_points_awarded')
             ->get();
 
-        $events = Event::with(['predictions.player'])->orderBy('date')->get();
+        $events = Event::with(['predictions.player'])->where('archived', false)->orderBy('date')->get();
 
         return view('leaderboard', compact('players', 'events'));
     }
