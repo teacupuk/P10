@@ -18,6 +18,7 @@ class LeaderboardController extends Controller
         $season = Season::where('active', true)->first();
 
         $events = Event::where('season_id', $season->id)
+            ->whereHas('predictions')
             ->with(['predictions.player'])
             ->where('archived', false)
             ->orderBy('date')->get();
