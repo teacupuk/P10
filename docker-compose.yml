@@ -33,6 +33,7 @@ services:
       - p10-db
     networks:
       - app-network
+      
 networks:
   app-network:
     driver: bridge
