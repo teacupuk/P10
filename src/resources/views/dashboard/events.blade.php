@@ -7,71 +7,85 @@
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <form method="GET" action="{{ route('dashboard.events') }}" class="flex flex-wrap gap-2 items-center flex-1">
-                    <input type="text" name="search" placeholder="Search events..." value="{{ request('search') }}"
-                        class="px-4 py-2 border border-gray-300 rounded dark:bg-gray-700 dark:text-white w-full md:w-auto" />
 
-                    <label class="inline-flex items-center text-sm text-gray-600 dark:text-gray-300">
-                        <input type="checkbox" name="show_archived" value="1" {{ request('show_archived') ? 'checked' : '' }}
-                            class="mr-2">
-                        Show Archived
-                    </label>
+            {{-- Filter/Search --}}
+            <div class="mb-6">
+            <form method="GET" action="{{ route('dashboard.events') }}" class="w-full">
+                <div
+                class="flex w-full rounded-md border border-gray-300 overflow-hidden
+                        bg-white dark:bg-gray-800"
+                >
+                {{-- Stretchy input --}}
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search events..."
+                    value="{{ request('search') }}"
+                    class="flex-1 min-w-0 px-4 py-2 bg-transparent
+                        text-gray-900 dark:text-white
+                        placeholder-gray-500 dark:placeholder-gray-400
+                        focus:outline-none"
+                />
 
-                    <button type="submit" class="ml-2 px-4 py-2 text-sm bg-gray-700 text-white rounded hover:bg-gray-600">
-                        Filter
-                    </button>
-                </form>
+                {{-- Pinned button --}}
+                <button
+                    type="submit"
+                    class="flex-none px-4 py-2 bg-gray-700 text-white hover:bg-gray-600
+                        dark:bg-gray-700 dark:hover:bg-gray-600 transition"
+                    title="Search"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 3.5a7.5 7.5 0 0013.15 13.15z"/>
+                    </svg>
+                </button>
+                </div>
+            </form>
             </div>
-            @foreach ($events as $event)
-                <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 mb-4">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div class="flex flex-col">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                {{ $event->season_id }} {{ $event->name }}
-                            </h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                {{ $event->date->format('F j, Y') }}
-                            </p>
-                        </div>
-                        <div class="flex flex-wrap gap-3 md:ml-auto">
-                            @if ($event->archived)
-                                <form action="{{ route('dashboard.events.restore', $event) }}" method="POST">
-                                    @csrf
-                                    <button type="submit"
-                                            class="inline-block px-4 py-2 text-sm font-medium text-green-600 border border-green-600 rounded hover:bg-green-600 hover:text-white transition">
-                                        Restore
-                                    </button>
-                                </form>
-                            @else
-                                <a href="{{ route('dashboard.qualifying.edit', $event->id) }}"
-                                class="inline-block px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
-                                    Edit Qualifying
-                                </a>
 
-                                <a href="{{ route('dashboard.predictions.edit', $event->id) }}"
-                                class="inline-block px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
-                                    Edit Predictions
-                                </a>
-                                
-                                <a href="{{ route('dashboard.events.edit', $event->id) }}#"
-                                class="inline-block px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
-                                    Edit Event
-                                </a>
+            <hr>
 
-                                <form method="POST" action="{{ route('dashboard.events.archive', $event) }}" onsubmit="return confirm('Archive this event?')" class="inline">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit"
-                                        class="inline-block px-4 py-2 text-sm font-medium text-red-600 border border-red-600 rounded hover:bg-red-600 hover:text-white transition">
-                                        Archive
-                                    </button>
-                                </form>
-                            @endif
-                        </div>
+            {{-- Upcoming Events --}}
+            <div class="mt-6 mb-6">
+                @foreach ($upcomingEvents as $event)
+                    @include('components.event-card', ['event' => $event])
+                @endforeach
+            </div>
+
+            {{-- Past Events Accordion --}}
+            @if ($pastEvents->count())
+                <div x-data="{ openPast: false }" class="mt-6 mb-6">
+                    <button @click="openPast = !openPast"
+                            class="w-full text-left text-sm font-semibold text-gray-500 dark:text-gray-300 hover:text-gray-800">
+                        <span x-text="openPast ? '▼' : '►'"></span>
+                        Past Events ({{ $pastEvents->count() }})
+                    </button>
+                    <div x-show="openPast" x-transition class="mt-3 space-y-4">
+                        @foreach ($pastEvents as $event)
+                            @include('components.event-card', ['event' => $event])
+                        @endforeach
                     </div>
                 </div>
-            @endforeach
+            @endif
+
+            {{-- Archived Events Accordion --}}
+            @if ($archivedEvents->count())
+                <div x-data="{ openArchived: false }" class="mt-6">
+                    <button @click="openArchived = !openArchived"
+                            class="w-full text-left text-sm font-semibold text-gray-500 dark:text-gray-300 hover:text-gray-800">
+                        <span x-text="openArchived ? '▼' : '►'"></span>
+                        Archived Events ({{ $archivedEvents->count() }})
+                    </button>
+                    <div x-show="openArchived" x-transition class="mt-3 space-y-4">
+                        @foreach ($archivedEvents as $event)
+                            @include('components.event-card', ['event' => $event])
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
         </div>
     </div>
 </x-app-layout>

@@ -12,8 +12,13 @@ return new class extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->year('season_id')->after('id')->default(2025);
-
+            $table->year('season_id')->nullable()->default(2025);
+        });
+        
+        // Patch bad/null data
+        Season::firstOrCreate(['id' => now()->year], ['active' => true]);
+        
+        Schema::table('events', function (Blueprint $table) {
             $table->foreign('season_id')->references('id')->on('seasons')->onDelete('cascade');
         });
     }

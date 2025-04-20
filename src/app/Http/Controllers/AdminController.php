@@ -31,20 +31,22 @@ class AdminController extends Controller
     public function events(Request $request)
     {
         $search = $request->input('search');
-        $showArchived = $request->boolean('show_archived');
         $season = Season::where('active', true)->first();
 
-        $events = Event::where('season_id', $season->id)
-            ->when($search, function ($query, $search) {
-                return $query->where('name', 'like', '%' . $search . '%');
-            })
-            ->when(!$showArchived, function ($query) {
-                return $query->where('archived', false);
-            })
+        $query = Event::where('season_id', $season->id)
+            ->where('archived', false)
+            ->when($search, fn($q) => $q->where('name', 'like', '%' . $search . '%'))
+            ->orderBy('date');
+        
+        $upcomingEvents = (clone $query)->where('date', '>=', now())->get();
+        $pastEvents = (clone $query)->where('date', '<', now())->get();
+
+        $archivedEvents = Event::where('season_id', $season->id)
+            ->where('archived', true)
             ->orderBy('date')
             ->get();
 
-        return view('dashboard.events', compact('events', 'search', 'showArchived'));
+        return view('dashboard.events', compact('upcomingEvents', 'pastEvents', 'archivedEvents', 'search'));
     }
 
     public function editEvent(Event $event)
