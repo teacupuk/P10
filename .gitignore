@@ -4,3 +4,4 @@ node_modules
 vendor
 mysql
 .DS_Store
+.vscode/settings.json

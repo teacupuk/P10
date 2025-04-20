@@ -99,4 +99,71 @@ class AdminController extends Controller
 
         return redirect()->route('dashboard.events')->with('success', 'Predictions updated.');
     }
+
+    public function players(Request $request)
+    {
+        $search = $request->input('search');
+        $showArchived = $request->boolean('show_archived');
+
+        $players = Player::when($search, function ($query, $search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->when(!$showArchived, function ($query) {
+                return $query->where('archived', false);
+            })
+            ->get();
+
+        return view('dashboard.players', compact('players', 'search', 'showArchived'));
+    }
+
+    // Edit a specific player
+    public function editPlayer(Player $player)
+    {
+        return view('dashboard.players.edit', compact('player'));
+    }
+
+    // Update player
+    public function updatePlayer(Request $request, Player $player)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $player->update($request->only('name'));
+
+        return redirect()->route('dashboard.players')->with('success', 'Player updated.');
+    }
+
+    // Show form to create new player
+    public function createPlayer()
+    {
+        return view('dashboard.players.create');
+    }
+
+    // Store new player
+    public function storePlayer(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        Player::create($request->only('name'));
+
+        return redirect()->route('dashboard.players')->with('success', 'Player created.');
+    }
+
+    // Delete player (archive instead of delete)
+    public function deletePlayer(Player $player)
+    {
+        $player->update(['archived' => true]);
+
+        return redirect()->route('dashboard.players')->with('success', 'Player archived.');
+    }
+
+    public function restorePlayer(Player $player)
+    {
+        $player->update(['archived' => false]);
+
+        return redirect()->route('dashboard.players')->with('success', 'Player restored.');
+    }
 }
