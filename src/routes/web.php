@@ -30,6 +30,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::patch('/dashboard/events/{event}', [AdminController::class, 'updateEvent'])->name('dashboard.events.update');
     Route::patch('/dashboard/events/{event}/archive', [AdminController::class, 'archiveEvent'])->name('dashboard.events.archive');
     Route::post('/dashboard/events/{event}/restore', [AdminController::class, 'restoreEvent'])->name('dashboard.events.restore');
+    Route::get('/events/create', [AdminController::class, 'createEvent'])->name('dashboard.events.create');
+    Route::post('/events', [AdminController::class, 'storeEvent'])->name('dashboard.events.store');
     
     # === Players ===
     Route::get('/dashboard/players', [AdminController::class, 'players'])->name('dashboard.players');

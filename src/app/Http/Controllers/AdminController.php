@@ -37,7 +37,7 @@ class AdminController extends Controller
             ->where('archived', false)
             ->when($search, fn($q) => $q->where('name', 'like', '%' . $search . '%'))
             ->orderBy('date');
-        
+
         $upcomingEvents = (clone $query)->where('date', '>=', now())->get();
         $pastEvents = (clone $query)->where('date', '<', now())->get();
 
@@ -47,6 +47,33 @@ class AdminController extends Controller
             ->get();
 
         return view('dashboard.events', compact('upcomingEvents', 'pastEvents', 'archivedEvents', 'search'));
+    }
+
+    public function createEvent()
+    {
+        return view('dashboard.events.create');
+    }
+
+    public function storeEvent(Request $request)
+    {
+        $request->validate([
+            'name'      => 'required|string|max:255',
+            'date'      => 'required|date',
+            'is_sprint' => 'sometimes|boolean',
+        ]);
+
+        // Default archived to false, assign current active season
+        $season = Season::where('active', true)->first();
+        Event::create([
+            'season_id'  => $season->id,
+            'name'       => $request->name,
+            'date'       => $request->date,
+            'is_sprint'  => $request->boolean('is_sprint'),
+            'archived'   => false,
+        ]);
+
+        return redirect()->route('dashboard.events')
+                        ->with('success', 'Event created.');
     }
 
     public function editEvent(Event $event)
