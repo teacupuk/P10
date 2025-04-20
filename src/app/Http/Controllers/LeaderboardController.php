@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Player;
 use App\Models\Event;
+use App\Models\Season;
 
 use Illuminate\Support\Facades\DB;
 
@@ -14,8 +15,12 @@ class LeaderboardController extends Controller
         $players = Player::withSum('predictions', 'points_awarded')
             ->orderByDesc('predictions_sum_points_awarded')
             ->get();
+        $season = Season::where('active', true)->first();
 
-        $events = Event::with(['predictions.player'])->where('archived', false)->orderBy('date')->get();
+        $events = Event::where('season_id', $season->id)
+            ->with(['predictions.player'])
+            ->where('archived', false)
+            ->orderBy('date')->get();
 
         return view('leaderboard', compact('players', 'events'));
     }

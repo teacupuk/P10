@@ -30,4 +30,9 @@ class Event extends Model
     {
         return $this->hasMany(QualifyingPosition::class)->orderBy('position');
     }
+
+    public function season()
+    {
+        return $this->belongsTo(Season::class);
+    }
 }

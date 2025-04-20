@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Player;
 use App\Models\Driver; 
 use App\Models\Prediction;
+use App\Models\Season;
 
 use Illuminate\Http\Request;
 
@@ -31,8 +32,10 @@ class AdminController extends Controller
     {
         $search = $request->input('search');
         $showArchived = $request->boolean('show_archived');
+        $season = Season::where('active', true)->first();
 
-        $events = Event::when($search, function ($query, $search) {
+        $events = Event::where('season_id', $season->id)
+            ->when($search, function ($query, $search) {
                 return $query->where('name', 'like', '%' . $search . '%');
             })
             ->when(!$showArchived, function ($query) {

@@ -28,7 +28,7 @@
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="flex flex-col">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                {{ $event->name }}
+                                {{ $event->season_id }} {{ $event->name }}
                             </h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400">
                                 {{ $event->date->format('F j, Y') }}
