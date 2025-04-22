@@ -15,38 +15,37 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
             {{-- Search & Add Player Row --}}
-            <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div class="flex flex-grow md:max-w-lg">
-                    <form method="GET" action="{{ route('dashboard.players') }}" class="flex w-full">
-                        <div class="flex w-full rounded-md border border-gray-300 overflow-hidden dark:border-gray-600 dark:bg-gray-800">
-                            {{-- Stretchy search input --}}
-                            <input
-                                type="text"
-                                name="search"
-                                placeholder="Search players..."
-                                value="{{ request('search') }}"
-                                class="flex-1 min-w-0 px-4 py-2 bg-transparent
-                                       text-gray-900 dark:text-white
-                                       placeholder-gray-400 focus:outline-none"
-                            />
+            <div class="mb-6">
+                <form method="GET" action="{{ route('dashboard.players') }}" class="w-full">
+                    <div class="flex w-full rounded-md border border-gray-300 overflow-hidden bg-white dark:bg-gray-800">
+                        {{-- Stretchy search input --}}
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="Search players..."
+                            value="{{ request('search') }}"
+                            class="flex-1 min-w-0 px-4 py-2 bg-transparent
+                                    text-gray-900 dark:text-white
+                                    placeholder-gray-500 dark:placeholder-gray-400
+                                    focus:outline-none"
+                        />
 
-                            {{-- Pinned search button --}}
-                            <button
-                                type="submit"
-                                class="flex-none px-4 py-2 bg-gray-700 text-white hover:bg-gray-600
-                                       dark:bg-gray-700 dark:hover:bg-gray-600 transition"
-                                title="Search"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                     stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 3.5a7.5 7.5 0 0013.15 13.15z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                        {{-- Pinned search button --}}
+                        <button
+                            type="submit"
+                            class="flex-none px-4 py-2 bg-gray-700 text-white hover:bg-gray-600
+                                    dark:bg-gray-700 dark:hover:bg-gray-600 transition"
+                            title="Search"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 3.5a7.5 7.5 0 0013.15 13.15z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
             </div>
 
             <hr>

@@ -45,6 +45,8 @@ RUN chmod +x /start.sh
 EXPOSE 80
 
 RUN composer install
+RUN composer require laravel/breeze --dev
+RUN npm install && npm run build
 
 # Start services
 CMD ["/start.sh"]
