@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
+    nano \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Install Node.js (LTS) + npm
@@ -42,6 +43,8 @@ RUN chmod +x /start.sh
 
 # Expose port
 EXPOSE 80
+
+RUN composer install
 
 # Start services
 CMD ["/start.sh"]
