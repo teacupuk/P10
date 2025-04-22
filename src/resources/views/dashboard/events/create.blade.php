@@ -12,8 +12,8 @@
     </x-slot>
 
     <div class="py-6">
-        <div class="max-w-3xl mx-auto px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 mb-4">
                 <form method="POST" action="{{ route('dashboard.events.store') }}">
                     @csrf
 
@@ -22,7 +22,7 @@
                             Name
                         </label>
                         <input name="name" type="text" value="{{ old('name') }}"
-                               class="form-input w-full dark:bg-gray-700 dark:text-white" required>
+                                class="form-input w-full dark:bg-gray-700 dark:text-white" required>
                     </div>
 
                     <div class="mb-4">
@@ -30,13 +30,13 @@
                             Date
                         </label>
                         <input name="date" type="date" value="{{ old('date') }}"
-                               class="form-input w-full dark:bg-gray-700 dark:text-white" required>
+                                class="form-input w-full dark:bg-gray-700 dark:text-white" required>
                     </div>
 
                     <div class="mb-4 flex items-center">
                         <input type="hidden" name="is_sprint" value="0">
                         <input id="is_sprint" name="is_sprint" type="checkbox" value="1"
-                               class="mr-2" {{ old('is_sprint') ? 'checked' : '' }}>
+                                class="mr-2" {{ old('is_sprint') ? 'checked' : '' }}>
                         <label for="is_sprint" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                             Sprint Race
                         </label>
