@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Barlow Condensed', sans-serif;
@@ -63,38 +64,52 @@
                 <div class="d-flex align-items-center">
                     <span class="fs-1 fw-bold">P10 Game</span>
                 </div>
-                <nav class="d-none d-md-flex gap-4 fs-3 fw-semibold">
+                <nav class="d-none d-md-flex align-items-center gap-4 fs-3 fw-semibold">
                     <a href="/" class="text-white text-decoration-none">Leaderboard</a>
+                    <div class="dropdown">
+                        <button class="btn btn-danger dropdown-toggle fs-3 fw-semibold text-white ms-3"
+                                type="button" id="seasonDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Previous
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="seasonDropdown">
+                            @foreach($allSeasons as $s)
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('leaderboard', ['season' => $s->id]) }}">
+                                        {{ $s->id }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
                     <a href="/rules" class="text-white text-decoration-none">Rules</a>
+
                 </nav>
             </div>
         </div>
     </header>
     <div class="container my-3 px-3 px-md-4 pt-2" style="max-width: 960px;">
         <section id="leaderboard" class="mb-5">
-            <div class="card bg-white text-dark border-0">
-                <div class="card-body">
-                    <h2 class="text-uppercase text-black fs-2 fw-bold text-center border-bottom border-danger pb-2 mb-4">Leaderboard</h2>
-                    
-                    <div class="table-responsive">
-                        <table class="table table-sm table-f1 table-borderless mb-4">
-                            <thead class="table-dark text-white">
+            <div class="max-w-4xl mx-auto p-6">
+                <h1 class="text-uppercase fw-bold text-black fs-3 border-bottom border-2 border-danger pb-2 text-center mb-4">Leaderboard</h1>
+                <canvas id="pointsChart" class="w-full h-64"></canvas>
+                <br>
+                <div class="table-responsive mt-4">
+                    <table class="table table-sm table-f1 table-borderless mb-4">
+                        <thead class="table-dark text-white">
+                            <tr>
+                                <th>Player</th>
+                                <th class="text-end">Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($players->filter(fn($player) => ($player->predictions_sum_points_awarded ?? 0) > 0) as $player)
                                 <tr>
-                                    <th>Player</th>
-                                    <th class="text-end">Points</th>
+                                    <td class="fw-bold">{{ $player->name }}</td>
+                                    <td class="text-end fw-bold">{{ $player->predictions_sum_points_awarded }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($players->filter(fn($player) => $player->predictions_sum_points_awarded !== null) as $player)
-                                    <tr>
-                                        <td class="fw-bold">{{ $player->name }}</td>
-                                        <td class="text-end fw-bold">{{ $player->predictions_sum_points_awarded }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
@@ -102,10 +117,9 @@
         <hr class="my-4">
 
         <section id="event-breakdown">
-            <h2 class="text-uppercase fw-bold text-black fs-3 border-bottom border-2 border-danger pb-2 text-center mb-4">Race Breakdown</h2>
-
+            <h1 class="text-uppercase fw-bold text-black fs-3 border-bottom border-2 border-danger pb-2 text-center mb-4">Latest Races</h1>
             <div class="accordion" id="eventAccordion">
-                @foreach($events as $index => $event)
+                @foreach($recentEvents as $index => $event)
                     <div class="accordion-item bg-white text-dark border-0 mb-3">
                         <h2 class="accordion-header" id="heading{{ $index }}">
                             <button class="accordion-button collapsed bg-danger text-white fw-semibold border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}" aria-expanded="false" aria-controls="collapse{{ $index }}">
@@ -153,7 +167,41 @@
         </section>
 
     </div>
+    
 
+    <script>
+        const ctx = document.getElementById('pointsChart').getContext('2d');
+        new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @json($labels),
+            datasets: @json($datasets)
+        },
+        options: {
+            responsive: true,
+            plugins: {
+            legend: { position: 'bottom' },
+            tooltip: { mode: 'index', intersect: false }
+            },
+            interaction: {
+            mode: 'nearest',
+            axis: 'x',
+            intersect: false
+            },
+            scales: {
+            x: {
+                title: { display: true, text: 'Grand Prix' },
+                ticks: { maxRotation: 0, autoSkip: false }
+            },
+            y: {
+                title: { display: true, text: 'Cumulative Points' },
+                beginAtZero: true,
+                precision: 0
+            }
+            }
+        }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

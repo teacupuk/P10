@@ -31,7 +31,11 @@ class AdminController extends Controller
     public function events(Request $request)
     {
         $search = $request->input('search');
-        $season = Season::where('active', true)->first();
+        // Determine selected season or fall back to active
+        $seasonId = $request->input('season');
+        $season = Season::find($seasonId) 
+            ?? Season::where('active', true)->first();
+        $allSeasons = Season::orderByDesc('id')->get();
 
         $query = Event::where('season_id', $season->id)
             ->where('archived', false)
@@ -46,7 +50,7 @@ class AdminController extends Controller
             ->orderBy('date')
             ->get();
 
-        return view('dashboard.events', compact('upcomingEvents', 'pastEvents', 'archivedEvents', 'search'));
+        return view('dashboard.events', compact('upcomingEvents', 'pastEvents', 'archivedEvents', 'search', 'season', 'allSeasons'));
     }
 
     public function createEvent()
