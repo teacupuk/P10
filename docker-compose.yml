@@ -5,7 +5,7 @@ services:
     build: .
     container_name: p10-web
     ports:
-      - "80:80"
+      - "7080:7080"
     depends_on:
       - p10-db
     networks:
