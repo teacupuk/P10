@@ -16,10 +16,18 @@ class LeaderboardController extends Controller
         $season = Season::where('active', true)->first();
 
         // All players, sorted and filtered
-        $players = Player::withSum('predictions', 'points_awarded')
-            ->orderByDesc('predictions_sum_points_awarded')
+        $players = Player::with(['predictions.event'])
             ->get()
-            ->filter(fn($player) => ($player->predictions_sum_points_awarded ?? 0) > 0)
+            ->map(function ($player) use ($season) {
+                $seasonPredictions = $player->predictions->filter(function ($prediction) use ($season) {
+                    return $prediction->event->season_id === $season->id;
+                });
+
+                $player->season_points = $seasonPredictions->sum('points_awarded');
+                return $player;
+            })
+            ->filter(fn($player) => $player->season_points > 0)
+            ->sortByDesc('season_points')
             ->values();
 
         // All events that have predictions, for breakdown
@@ -63,6 +71,6 @@ class LeaderboardController extends Controller
         })->toArray();
 
         // Pass recentEvents for latest races display
-        return view('leaderboard', compact('players', 'events', 'labels', 'datasets', 'recentEvents', 'allSeasons'));
+        return view('leaderboard', compact('players', 'events', 'labels', 'datasets', 'recentEvents', 'allSeasons', 'season'));
     }
 }

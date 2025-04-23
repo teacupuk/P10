@@ -32,7 +32,9 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::post('/dashboard/events/{event}/restore', [AdminController::class, 'restoreEvent'])->name('dashboard.events.restore');
     Route::get('/events/create', [AdminController::class, 'createEvent'])->name('dashboard.events.create');
     Route::post('/events', [AdminController::class, 'storeEvent'])->name('dashboard.events.store');
-    
+    Route::get('/seasons/create', [AdminController::class, 'createSeason'])->name('dashboard.seasons.create');
+    Route::post('/seasons', [AdminController::class, 'storeSeason'])->name('dashboard.seasons.store');
+
     # === Players ===
     Route::get('/dashboard/players', [AdminController::class, 'players'])->name('dashboard.players');
     Route::get('/dashboard/players/{player}/edit', [AdminController::class, 'editPlayer'])->name('dashboard.players.edit');

@@ -9,6 +9,10 @@
                 class="inline-block px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 text-sm font-medium">
                     + Add Event
                 </a>
+                <a href="{{ route('dashboard.seasons.create') }}"
+                class="inline-block px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 text-sm font-medium">
+                    + Add Season
+                </a>
                 <form method="GET" action="{{ route('dashboard.events') }}">
                     <select name="season"
                             onchange="this.form.submit()"

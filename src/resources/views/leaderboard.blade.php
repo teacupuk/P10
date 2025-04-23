@@ -14,10 +14,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($players->filter(fn($player) => ($player->predictions_sum_points_awarded ?? 0) > 0) as $player)
+                            @foreach($players->filter(fn($player) => ($player->season_points ?? 0) > 0) as $player)
                                 <tr>
                                     <td class="fw-bold">{{ $player->name }}</td>
-                                    <td class="text-end fw-bold">{{ $player->predictions_sum_points_awarded }}</td>
+                                    <td class="text-end fw-bold">{{ $player->season_points }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -116,6 +116,26 @@ class AdminController extends Controller
         return redirect()->route('dashboard.events')->with('success', 'Event updated.');
     }
 
+    public function createSeason()
+    {
+        return view('dashboard.seasons.create');
+    }
+
+    public function storeSeason(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|unique:seasons,id',
+            'active' => 'nullable|boolean'
+        ]);
+
+        Season::create([
+            'id' => $request->id,
+            'active' => $request->has('active')
+        ]);
+
+        return redirect()->route('dashboard.events')->with('success', 'Season created!');
+    }
+
     public function editQualifying(Event $event)
     {
         $drivers = Driver::orderBy('name')->get();
