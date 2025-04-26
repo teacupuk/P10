@@ -55,7 +55,10 @@ class AdminController extends Controller
 
     public function createEvent()
     {
-        return view('dashboard.events.create');
+        $activeSeason = Season::where('active', true)->first();
+        $allSeasons = Season::orderByDesc('id')->get();
+
+        return view('dashboard.events.create', compact('activeSeason', 'allSeasons'));
     }
 
     public function storeEvent(Request $request)
@@ -66,10 +69,9 @@ class AdminController extends Controller
             'is_sprint' => 'sometimes|boolean',
         ]);
 
-        // Default archived to false, assign current active season
         $season = Season::where('active', true)->first();
         Event::create([
-            'season_id'  => $season->id,
+            'season_id'  => $request->season_id,
             'name'       => $request->name,
             'date'       => $request->date,
             'is_sprint'  => $request->boolean('is_sprint'),
@@ -82,7 +84,9 @@ class AdminController extends Controller
 
     public function editEvent(Event $event)
     {
-        return view('dashboard.events.edit', compact('event'));
+        $allSeasons = Season::orderByDesc('id')->get();
+
+        return view('dashboard.events.edit', compact('event', 'allSeasons'));
     }
 
     public function archiveEvent(Event $event)
@@ -108,6 +112,7 @@ class AdminController extends Controller
         ]);
 
         $event->update([
+            'season_id'  => $request->season_id,
             'name' => $request->input('name'),
             'date' => $request->input('date'),
             'is_sprint' => $request->boolean('is_sprint'),

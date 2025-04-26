@@ -17,6 +17,21 @@
                 <form method="POST" action="{{ route('dashboard.events.store') }}">
                     @csrf
 
+                    {{-- Season Selector --}}
+                    <div class="mb-4">
+                        <label for="season_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            {{ __('Season') }}
+                        </label>
+                        <select name="season_id" id="season_id"
+                                class="form-select w-full dark:bg-gray-700 dark:text-white border-gray-300 rounded">
+                            @foreach($allSeasons as $s)
+                                <option value="{{ $s->id }}" @if($s->id == $activeSeason->id) selected @endif>
+                                    {{ $s->id }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Name
