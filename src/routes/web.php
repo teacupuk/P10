@@ -7,6 +7,13 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LeaderboardController::class, 'index'])->name('leaderboard');
+
+// Season‐specific leaderboard
+Route::get('/leaderboard/{season}', [LeaderboardController::class, 'showSeason'])->where('season', '[0-9]{4}')->name('leaderboard.season');
+
+// Fallback to active‐season leaderboard
+Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
+
 Route::view('/rules', 'rules')->name('rules');
 
 Route::get('/dashboard', [AdminController::class, 'index'])

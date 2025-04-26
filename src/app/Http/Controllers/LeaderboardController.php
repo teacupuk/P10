@@ -73,4 +73,36 @@ class LeaderboardController extends Controller
         // Pass recentEvents for latest races display
         return view('leaderboard', compact('players', 'events', 'labels', 'datasets', 'recentEvents', 'allSeasons', 'season'));
     }
+
+    public function showSeason(Season $season)
+    {
+        // 1) Fetch all events in this season, un‐archived, that have predictions
+        $events = Event::where('season_id', $season->id)
+            ->where('archived', false)
+            ->whereHas('predictions')
+            ->with(['predictions.player', 'qualifyingPositions'])
+            ->orderBy('date')
+            ->get();
+
+        // 2) Compute each player’s total season points
+        $players = Player::with('predictions.event')
+            ->get()
+            ->map(function ($player) use ($season) {
+                $points = $player->predictions
+                    ->filter(fn($p) => $p->event->season_id === $season->id)
+                    ->sum('points_awarded');
+                $player->season_points = $points;
+                return $player;
+            })
+            ->filter(fn($p) => $p->season_points > 0)
+            ->sortByDesc('season_points')
+            ->values();
+
+        // 3) Pass to a view (e.g. leaderboard/season.blade.php)
+        return view('leaderboard.season', [
+            'season'  => $season,
+            'events'  => $events,
+            'players' => $players,
+        ]);
+    }
 }

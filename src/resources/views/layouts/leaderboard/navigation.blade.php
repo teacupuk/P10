@@ -9,12 +9,12 @@
                 <div class="dropdown">
                     <button class="btn btn-danger dropdown-toggle fs-3 fw-semibold text-white ms-3"
                             type="button" id="seasonDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Previous
+                        Seasons
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="seasonDropdown">
                         @foreach($seasons as $s)
                             <li>
-                                <a class="dropdown-item" href="{{ route('leaderboard', ['season' => $s->id]) }}">
+                                <a class="dropdown-item" href="/leaderboard/{{ $s->id }}">
                                     {{ $s->id }}
                                 </a>
                             </li>
