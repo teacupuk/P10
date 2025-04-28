@@ -51,3 +51,6 @@ artisan:
 
 migrate:
 	docker exec -it $(PHP_SERVICE) php /var/www/html/artisan migrate
+
+migrate-fresh:
+	docker exec -it $(PHP_SERVICE) php /var/www/html/artisan migrate:fresh
