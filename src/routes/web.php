@@ -6,19 +6,19 @@ use App\Http\Controllers\AdminController;
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [LeaderboardController::class, 'index'])->name('leaderboard');
+Route::get('/', [LeaderboardController::class, 'index'])->name('public.app');
 
 // Season‐specific leaderboard
-Route::get('/leaderboard/{season}', [LeaderboardController::class, 'showSeason'])->where('season', '[0-9]{4}')->name('leaderboard.season');
+Route::get('/leaderboard/{season}', [LeaderboardController::class, 'showSeason'])->where('season', '[0-9]{4}')->name('public.season');
 
 // Fallback to active‐season leaderboard
-Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
+Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('public.app');
 
-Route::view('/rules', 'rules')->name('rules');
+Route::view('/rules', 'rules')->name('public.rules');
 
 Route::get('/dashboard', [AdminController::class, 'index'])
     ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    ->name('dashboard.app');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

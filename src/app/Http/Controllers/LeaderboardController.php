@@ -71,7 +71,7 @@ class LeaderboardController extends Controller
         })->toArray();
 
         // Pass recentEvents for latest races display
-        return view('leaderboard', compact('players', 'events', 'labels', 'datasets', 'recentEvents', 'allSeasons', 'season'));
+        return view('public.app', compact('players', 'events', 'labels', 'datasets', 'recentEvents', 'allSeasons', 'season'));
     }
 
     public function showSeason(Season $season)
@@ -99,7 +99,7 @@ class LeaderboardController extends Controller
             ->values();
 
         // 3) Pass to a view (e.g. leaderboard/season.blade.php)
-        return view('leaderboard.season', [
+        return view('public.season', [
             'season'  => $season,
             'events'  => $events,
             'players' => $players,

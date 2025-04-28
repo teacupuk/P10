@@ -25,7 +25,7 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        return view('dashboard', compact('upcomingEvents', 'topPlayers'));
+        return view('dashboard.app', compact('upcomingEvents', 'topPlayers'));
     }
 
     public function events(Request $request)

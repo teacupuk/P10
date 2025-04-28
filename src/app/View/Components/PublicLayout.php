@@ -12,6 +12,6 @@ class PublicLayout extends Component
      */
     public function render(): View
     {
-        return view('layouts.leaderboard.app');
+        return view('layouts.public.app');
     }
 }
