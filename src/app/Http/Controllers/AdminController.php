@@ -174,7 +174,7 @@ class AdminController extends Controller
 
         // Determine if this event awards double points
         $multiplier = $event->double_points ? 2 : 1;
-
+        
         // Pulls the predictions for this event
         $predictions = Prediction::where('event_id', $event->id)->get();
 

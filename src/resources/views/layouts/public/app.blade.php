@@ -62,7 +62,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.leaderboard.navigation')
+            @include('layouts.public.navigation')
             <main>
                 {{ $slot }}
             </main>

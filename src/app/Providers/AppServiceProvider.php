@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('layouts.leaderboard.navigation', function ($view) {
+        View::composer('layouts.public.navigation', function ($view) {
             $seasons = Season::orderBy('id', 'asc')->get();
             $activeSeason = Season::where('active', true)->first();
 

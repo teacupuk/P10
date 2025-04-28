@@ -14,7 +14,7 @@ Route::get('/leaderboard/{season}', [LeaderboardController::class, 'showSeason']
 // Fallback to active‐season leaderboard
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('public.app');
 
-Route::view('/rules', 'rules')->name('public.rules');
+Route::view('/rules', 'public.rules')->name('public.rules');
 
 Route::get('/dashboard', [AdminController::class, 'index'])
     ->middleware(['auth', 'verified'])
