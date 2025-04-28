@@ -13,12 +13,14 @@ class Event extends Model
         'name',
         'date',
         'is_sprint',
+        'double_points',
         'archived',
     ];
 
     protected $casts = [
         'date' => 'date',
         'is_sprint' => 'boolean',
+        'double_points' => 'boolean',
     ];
 
     // Relationships to predictions

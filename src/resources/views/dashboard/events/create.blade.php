@@ -57,6 +57,15 @@
                         </label>
                     </div>
 
+                    <div class="mb-4 flex items-center">
+                        <input type="hidden" name="double_points" value="0">
+                        <input id="double_points" name="double_points" type="checkbox" value="1"
+                                class="mr-2" {{ old('double_points') ? 'checked' : '' }}>
+                        <label for="is_sprint" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Double Points
+                        </label>
+                    </div>
+
                     <div class="flex justify-center mt-4">
                         <button type="submit"
                                 class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-blue-700 transition">

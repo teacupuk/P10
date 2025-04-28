@@ -75,6 +75,7 @@ class AdminController extends Controller
             'name'       => $request->name,
             'date'       => $request->date,
             'is_sprint'  => $request->boolean('is_sprint'),
+            'double_points' => $request->boolean('double_points'),
             'archived'   => false,
         ]);
 
@@ -109,6 +110,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'date' => 'required|date',
             'is_sprint' => 'nullable|boolean',
+            'double_points' => 'nullable|boolean',
         ]);
 
         $event->update([
@@ -116,6 +118,7 @@ class AdminController extends Controller
             'name' => $request->input('name'),
             'date' => $request->input('date'),
             'is_sprint' => $request->boolean('is_sprint'),
+            'double_points' => $request->boolean('double_points'),
         ]);
 
         return redirect()->route('dashboard.events')->with('success', 'Event updated.');
@@ -151,7 +154,8 @@ class AdminController extends Controller
 
     public function updateQualifying(Request $request, Event $event)
     {
-        $event->qualifyingPositions()->delete(); // Clear old qualifying data
+        // Clear old qualifying data
+        $event->qualifyingPositions()->delete(); 
 
         foreach ($request->positions as $position => $driverId) {
             if ($driverId) {

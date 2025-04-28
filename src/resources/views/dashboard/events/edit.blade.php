@@ -52,6 +52,14 @@
                         <label for="is_sprint">Sprint Race</label>
                     </div>
 
+                    <div class="mb-4 flex items-center">
+                        <input type="hidden" name="double_points" value="0">
+
+                        <input type="checkbox" name="double_points" id="double_points" value="1"
+                            {{ old('double_points', $event->double_points) ? 'checked' : '' }}>
+                        <label for="double_points">Double Points</label>
+                    </div>
+                    
                     <div class="flex justify-center mt-4">
                         <button type="submit" class="px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
                             Save Changes
