@@ -168,20 +168,24 @@ class AdminController extends Controller
         // Reset all points for this event
         Prediction::where('event_id', $event->id)->update(['points_awarded' => 0]);
 
+        // Determine if this event awards double points
+        $multiplier = $event->double_points ? 2 : 1;
+
+        // Pulls the predictions for this event
         $predictions = Prediction::where('event_id', $event->id)->get();
 
         // Try to find exact match for P10
         $winner = $predictions->firstWhere('predicted_driver', $p10DriverId);
 
         if ($winner) {
-            $winner->update(['points_awarded' => 2]);
+            $winner->update(['points_awarded' => 2 * $multiplier]);
         } else {
             // Look from P9 up to P1
             for ($pos = 9; $pos >= 1; $pos--) {
                 $driverId = $event->qualifyingPositions()->where('position', $pos)->value('driver_id');
                 $winner = $predictions->firstWhere('predicted_driver', $driverId);
                 if ($winner) {
-                    $winner->update(['points_awarded' => 1]);
+                    $winner->update(['points_awarded' => 1 * $multiplier]);
                     break;
                 }
             }
