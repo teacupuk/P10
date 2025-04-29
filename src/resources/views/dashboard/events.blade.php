@@ -70,28 +70,12 @@
 
             <hr>
 
-            {{-- Upcoming Events --}}
-            <div class="mt-6 mb-6">
-                @foreach ($upcomingEvents as $event)
-                    @include('components.event-card', ['event' => $event])
+            {{-- Active Events --}}
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach ($events as $event)
+                    @include('components.event-card', ['event' => $event]) 
                 @endforeach
             </div>
-
-            {{-- Past Events Accordion --}}
-            @if ($pastEvents->count())
-                <div x-data="{ openPast: false }" class="mt-6 mb-6">
-                    <button @click="openPast = !openPast"
-                            class="w-full text-left text-sm font-semibold text-gray-500 dark:text-gray-300 hover:text-gray-800">
-                        <span x-text="openPast ? '▼' : '►'"></span>
-                        Past Events ({{ $pastEvents->count() }})
-                    </button>
-                    <div x-show="openPast" x-transition class="mt-3 space-y-4">
-                        @foreach ($pastEvents as $event)
-                            @include('components.event-card', ['event' => $event])
-                        @endforeach
-                    </div>
-                </div>
-            @endif
 
             {{-- Archived Events Accordion --}}
             @if ($archivedEvents->count())

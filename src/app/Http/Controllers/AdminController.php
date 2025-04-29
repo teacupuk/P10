@@ -32,26 +32,25 @@ class AdminController extends Controller
     public function events(Request $request)
     {
         $search = $request->input('search');
-        // Determine selected season or fall back to active
         $seasonId = $request->input('season');
+
         $season = Season::find($seasonId) 
             ?? Season::where('active', true)->first();
+
         $allSeasons = Season::orderByDesc('id')->get();
 
-        $query = Event::where('season_id', $season->id)
+        $events = Event::where('season_id', $season->id)
             ->where('archived', false)
             ->when($search, fn($q) => $q->where('name', 'like', '%' . $search . '%'))
-            ->orderBy('date');
-
-        $upcomingEvents = (clone $query)->where('date', '>=', now())->get();
-        $pastEvents = (clone $query)->where('date', '<', now())->get();
+            ->orderBy('date')
+            ->get();
 
         $archivedEvents = Event::where('season_id', $season->id)
             ->where('archived', true)
             ->orderBy('date')
             ->get();
 
-        return view('dashboard.events', compact('upcomingEvents', 'pastEvents', 'archivedEvents', 'search', 'season', 'allSeasons'));
+        return view('dashboard.events', compact('archivedEvents', 'events', 'search', 'season', 'allSeasons'));
     }
 
     public function createEvent()
