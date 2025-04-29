@@ -8,6 +8,11 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
     ],
+    
+    safelist: [
+        'flag-icon',
+        { pattern: /^flag-icon-[a-z]{2}$/ },
+      ],
 
     theme: {
         extend: {

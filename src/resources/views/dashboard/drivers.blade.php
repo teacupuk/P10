@@ -51,40 +51,35 @@
             <hr>
             
             {{-- Driver Cards --}}
-            <div class="mt-6 mb-6">
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($drivers as $driver)
-                    <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 mb-4">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                            <div class="flex flex-col">
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                    {{ $driver->name }}
-                                </h3>
+                    <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden flex flex-col">
+                        <!-- Team color bar: ensure $driver->team is loaded and has color -->
+                        <div class="h-2" style="background-color: {{ $driver->team->color ?? '#111827' }};"></div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl text-gray-900 dark:text-gray-100 font-bold">{{ $driver->id }}</span>
+                                <span class="fi fi-{{ strtolower($driver->nationality) }} fis mr-2"></span>
                             </div>
-
-                            <div class="flex flex-wrap gap-3 md:ml-auto">
-                                @if ($driver->archived)
-                                    <form action="{{ route('dashboard.drivers.restore', $driver) }}" method="POST">
-                                        @csrf
-                                        <button type="submit"
-                                                class="px-4 py-2 text-sm font-medium text-green-600 border border-green-600 rounded hover:bg-green-600 hover:text-white transition">
-                                            Restore
-                                        </button>
-                                    </form>
-                                @else
-                                    <a href="{{ route('dashboard.drivers.edit', $driver) }}"
-                                    class="inline-block px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
-                                        Edit
-                                    </a>
-
-                                    <form action="{{ route('dashboard.drivers.destroy', $driver) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Delete this Driver?')"
-                                                class="inline-block px-4 py-2 text-sm font-medium text-red-600 border border-red-600 rounded hover:bg-red-600 hover:text-white transition">
-                                            Delete
-                                        </button>
-                                    </form>
-                                @endif
+                            <h3 class="mt-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                {{ $driver->name }}
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                                {{ $driver->team->name ?? '' }}
+                            </p>
+                            <div class="mt-auto flex space-x-2">
+                                <a href="{{ route('dashboard.drivers.edit', $driver) }}"
+                                   class="flex-1 inline-block px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 text-center">
+                                    Edit
+                                </a>
+                                <form action="{{ route('dashboard.drivers.destroy', $driver) }}" method="POST" class="flex-1">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" onclick="return confirm('Retire this Driver?')"
+                                            class="w-full px-3 py-2 text-sm font-medium text-red-600 border border-red-600 rounded hover:bg-red-600 hover:text-white transition">
+                                        Retire
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

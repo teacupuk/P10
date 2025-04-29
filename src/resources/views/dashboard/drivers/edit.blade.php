@@ -25,9 +25,19 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Team</label>
-                        <input name="team" type="text" value="{{ old('team', $driver->team) }}"
-                               class="form-input w-full dark:bg-gray-700 dark:text-white">
+                        <label for="team_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Team
+                        </label>
+                        <select name="team_id" id="team_id"
+                                class="form-select w-full dark:bg-gray-700 dark:text-white border-gray-300 rounded">
+                            <option value="">-- Select Team --</option>
+                            @foreach($teams as $team)
+                                <option value="{{ $team->id }}"
+                                    {{ old('team_id', $driver->team_id) == $team->id ? 'selected' : '' }}>
+                                    {{ $team->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="mb-4">

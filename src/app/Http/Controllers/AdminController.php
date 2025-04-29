@@ -7,6 +7,7 @@ use App\Models\Player;
 use App\Models\Driver; 
 use App\Models\Prediction;
 use App\Models\Season;
+use App\Models\Team;
 
 use Illuminate\Http\Request;
 
@@ -307,7 +308,9 @@ class AdminController extends Controller
     // Edit a specific player
     public function editDriver(Driver $driver)
     {
-        return view('dashboard.drivers.edit', compact('driver'));
+        $teams = Team::orderBy('name')->get();
+
+        return view('dashboard.drivers.edit', compact('driver', 'teams'));
     }
 
     // Update driver
@@ -316,15 +319,15 @@ class AdminController extends Controller
         $request->validate([
             'id'          => 'required|integer|unique:drivers,id,' . $driver->id,
             'name'        => 'required|string|max:255',
-            'team'        => 'required|string|max:255',
+            'team_id'        => 'required|integer',
             'nationality' => 'required|string|max:255',
         ]);
 
-        // Update driver attributes: id (driver number), name, team, nationality
+        // Update driver attributes: id (driver number), name, team_id, nationality
         $driver->update([
-            'id'  => $request->input('id'),
-            'name' => $request->input('name'),
-            'team' => $request->input('team'),
+            'id'          => $request->input('id'),
+            'name'        => $request->input('name'),
+            'team_id'     => $request->input('team_id'),
             'nationality' => $request->input('nationality'),
         ]);
 
@@ -334,7 +337,9 @@ class AdminController extends Controller
     // Show form to create new player
     public function createDriver()
     {
-        return view('dashboard.drivers.create');
+        $teams = Team::orderBy('name')->get();
+
+        return view('dashboard.drivers.create', compact('teams'));
     }
 
     // Store new player
