@@ -31,34 +31,34 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('/events', [AdminController::class, 'events'])->name('dashboard.events');
     Route::get('/events/{event}/qualifying', [AdminController::class, 'editQualifying'])->name('dashboard.qualifying.edit');
     Route::post('/events/{event}/qualifying', [AdminController::class, 'updateQualifying'])->name('dashboard.qualifying.update');
-    Route::get('/dashboard/events/{event}/predictions', [AdminController::class, 'editPredictions'])->name('dashboard.predictions.edit');
-    Route::post('/dashboard/events/{event}/predictions', [AdminController::class, 'updatePredictions'])->name('dashboard.predictions.update');
-    Route::get('/dashboard/events/{event}/edit', [AdminController::class, 'editEvent'])->name('dashboard.events.edit');
-    Route::patch('/dashboard/events/{event}', [AdminController::class, 'updateEvent'])->name('dashboard.events.update');
-    Route::patch('/dashboard/events/{event}/archive', [AdminController::class, 'archiveEvent'])->name('dashboard.events.archive');
-    Route::post('/dashboard/events/{event}/restore', [AdminController::class, 'restoreEvent'])->name('dashboard.events.restore');
+    Route::get('/events/{event}/predictions', [AdminController::class, 'editPredictions'])->name('dashboard.predictions.edit');
+    Route::post('/events/{event}/predictions', [AdminController::class, 'updatePredictions'])->name('dashboard.predictions.update');
+    Route::get('/events/{event}/edit', [AdminController::class, 'editEvent'])->name('dashboard.events.edit');
+    Route::patch('/events/{event}', [AdminController::class, 'updateEvent'])->name('dashboard.events.update');
+    Route::patch('/events/{event}/archive', [AdminController::class, 'archiveEvent'])->name('dashboard.events.archive');
+    Route::post('/events/{event}/restore', [AdminController::class, 'restoreEvent'])->name('dashboard.events.restore');
     Route::get('/events/create', [AdminController::class, 'createEvent'])->name('dashboard.events.create');
     Route::post('/events', [AdminController::class, 'storeEvent'])->name('dashboard.events.store');
     Route::get('/seasons/create', [AdminController::class, 'createSeason'])->name('dashboard.seasons.create');
     Route::post('/seasons', [AdminController::class, 'storeSeason'])->name('dashboard.seasons.store');
 
     # === Players ===
-    Route::get('/dashboard/players', [AdminController::class, 'players'])->name('dashboard.players');
-    Route::get('/dashboard/players/{player}/edit', [AdminController::class, 'editPlayer'])->name('dashboard.players.edit');
-    Route::patch('/dashboard/players/{player}', [AdminController::class, 'updatePlayer'])->name('dashboard.players.update');
-    Route::get('/dashboard/players/create', [AdminController::class, 'createPlayer'])->name('dashboard.players.create');
-    Route::post('/dashboard/players', [AdminController::class, 'storePlayer'])->name('dashboard.players.store');
-    Route::delete('/dashboard/players/{player}', [AdminController::class, 'deletePlayer'])->name('dashboard.players.destroy');
-    Route::post('/dashboard/players/{player}/restore', [AdminController::class, 'restorePlayer'])->name('dashboard.players.restore');
+    Route::get('/players', [AdminController::class, 'players'])->name('dashboard.players');
+    Route::get('/players/{player}/edit', [AdminController::class, 'editPlayer'])->name('dashboard.players.edit');
+    Route::patch('/players/{player}', [AdminController::class, 'updatePlayer'])->name('dashboard.players.update');
+    Route::get('/players/create', [AdminController::class, 'createPlayer'])->name('dashboard.players.create');
+    Route::post('/players', [AdminController::class, 'storePlayer'])->name('dashboard.players.store');
+    Route::delete('/players/{player}', [AdminController::class, 'deletePlayer'])->name('dashboard.players.destroy');
+    Route::post('/players/{player}/restore', [AdminController::class, 'restorePlayer'])->name('dashboard.players.restore');
 
     # === Drivers ===
-    Route::get('/dashboard/drivers', [AdminController::class, 'drivers'])->name('dashboard.drivers');
-    Route::get('/dashboard/drivers/{driver}/edit', [AdminController::class, 'editDriver'])->name('dashboard.drivers.edit');
-    Route::patch('/dashboard/drivers/{driver}', [AdminController::class, 'updateDriver'])->name('dashboard.drivers.update');
-    Route::get('/dashboard/drivers/create', [AdminController::class, 'createDriver'])->name('dashboard.drivers.create');
-    Route::post('/dashboard/drivers', [AdminController::class, 'storeDriver'])->name('dashboard.drivers.store');
-    Route::delete('/dashboard/drivers/{driver}', [AdminController::class, 'deleteDriver'])->name('dashboard.drivers.destroy');
-    Route::post('/dashboard/drivers/{driver}/restore', [AdminController::class, 'restoreDriver'])->name('dashboard.drivers.restore');
+    Route::get('/drivers', [AdminController::class, 'drivers'])->name('dashboard.drivers');
+    Route::get('/drivers/{driver}/edit', [AdminController::class, 'editDriver'])->name('dashboard.drivers.edit');
+    Route::patch('/drivers/{driver}', [AdminController::class, 'updateDriver'])->name('dashboard.drivers.update');
+    Route::get('/drivers/create', [AdminController::class, 'createDriver'])->name('dashboard.drivers.create');
+    Route::post('/drivers', [AdminController::class, 'storeDriver'])->name('dashboard.drivers.store');
+    Route::delete('/drivers/{driver}', [AdminController::class, 'deleteDriver'])->name('dashboard.drivers.destroy');
+    Route::post('/drivers/{driver}/restore', [AdminController::class, 'restoreDriver'])->name('dashboard.drivers.restore');
 });
 
 require __DIR__.'/auth.php';
