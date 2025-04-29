@@ -286,4 +286,72 @@ class AdminController extends Controller
 
         return redirect()->route('dashboard.players')->with('success', 'Player restored.');
     }
+
+    # ==== Driver Functions ====
+    public function drivers(Request $request)
+    {
+        $search = $request->input('search');
+        $showArchived = $request->boolean('show_archived');
+
+        $drivers = Driver::when($search, function ($query, $search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->when(!$showArchived, function ($query) {
+                return $query->where('archived', false);
+            })
+            ->get();
+
+        return view('dashboard.drivers', compact('drivers', 'search', 'showArchived'));
+    }
+
+    // Edit a specific player
+    public function editDriver(Driver $driver)
+    {
+        return view('dashboard.drivers.edit', compact('driver'));
+    }
+
+    // Update player
+    public function updateDriver(Request $request, Driver $driver)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $driver->update($request->only('name'));
+
+        return redirect()->route('dashboard.drivers')->with('success', 'Driver updated.');
+    }
+
+    // Show form to create new player
+    public function createDriver()
+    {
+        return view('dashboard.drivers.create');
+    }
+
+    // Store new player
+    public function storeDriver(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        Driver::create($request->only('name'));
+
+        return redirect()->route('dashboard.drivers')->with('success', 'Driver created.');
+    }
+
+    // Delete player (archive instead of delete)
+    public function deleteDriver(Driver $driver)
+    {
+        $driver->update(['archived' => true]);
+
+        return redirect()->route('dashboard.drivers')->with('success', 'Driver archived.');
+    }
+
+    public function restoreDriver(Driver $driver)
+    {
+        $driver->update(['archived' => false]);
+
+        return redirect()->route('dashboard.drivers')->with('success', 'Driver restored.');
+    }
 }

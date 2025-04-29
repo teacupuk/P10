@@ -50,6 +50,15 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::post('/dashboard/players', [AdminController::class, 'storePlayer'])->name('dashboard.players.store');
     Route::delete('/dashboard/players/{player}', [AdminController::class, 'deletePlayer'])->name('dashboard.players.destroy');
     Route::post('/dashboard/players/{player}/restore', [AdminController::class, 'restorePlayer'])->name('dashboard.players.restore');
+
+    # === Drivers ===
+    Route::get('/dashboard/drivers', [AdminController::class, 'drivers'])->name('dashboard.drivers');
+    Route::get('/dashboard/drivers/{driver}/edit', [AdminController::class, 'editDriver'])->name('dashboard.drivers.edit');
+    Route::patch('/dashboard/drivers/{driver}', [AdminController::class, 'updateDriver'])->name('dashboard.drivers.update');
+    Route::get('/dashboard/drivers/create', [AdminController::class, 'createDriver'])->name('dashboard.drivers.create');
+    Route::post('/dashboard/drivers', [AdminController::class, 'storeDriver'])->name('dashboard.drivers.store');
+    Route::delete('/dashboard/drivers/{driver}', [AdminController::class, 'deleteDriver'])->name('dashboard.drivers.destroy');
+    Route::post('/dashboard/drivers/{driver}/restore', [AdminController::class, 'restoreDriver'])->name('dashboard.drivers.restore');
 });
 
 require __DIR__.'/auth.php';
