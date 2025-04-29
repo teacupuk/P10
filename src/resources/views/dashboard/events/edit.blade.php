@@ -12,8 +12,8 @@
     </x-slot>
 
     <div class="py-6">
-        <div class="max-w-3xl mx-auto px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6">
+        <div class="max-w-5xl mx-auto px-6 lg:px-8 mb-6">
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 mb-6">
                 <form method="POST" action="{{ route('dashboard.events.update', $event) }}">
                     @csrf
                     @method('PATCH')
@@ -23,7 +23,7 @@
                             {{ __('Season') }}
                         </label>
                         <select name="season_id" id="season_id"
-                                class="form-select w-full dark:bg-gray-700 dark:text-white border-gray-300 rounded">
+                                class="form-select w-full dark:bg-gray-700 dark:text-white border border-gray-300 rounded">
                             @foreach($allSeasons as $s)
                                 <option value="{{ $s->id }}" @if($s->id == $event->season_id) selected @endif>
                                     {{ $s->id }}
@@ -35,29 +35,35 @@
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
                         <input type="text" name="name" value="{{ old('name', $event->name) }}"
-                               class="form-input w-full dark:bg-gray-700 dark:text-white">
+                               class="form-input w-full dark:bg-gray-700 dark:text-white border border-gray-300 rounded">
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
                         <input type="date" name="date" value="{{ old('date', $event->date->format('Y-m-d')) }}"
-                               class="form-input w-full dark:bg-gray-700 dark:text-white">
+                               class="form-input w-full dark:bg-gray-700 dark:text-white border border-gray-300 rounded">
                     </div>
 
                     <div class="mb-4 flex items-center">
                         <input type="hidden" name="is_sprint" value="0">
 
                         <input type="checkbox" name="is_sprint" id="is_sprint" value="1"
+                            class="form-checkbox h-5 w-5 text-red-600"
                             {{ old('is_sprint', $event->is_sprint) ? 'checked' : '' }}>
-                        <label for="is_sprint">Sprint Race</label>
+                        <label for="is_sprint" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                            Sprint Race
+                        </label>
                     </div>
 
                     <div class="mb-4 flex items-center">
                         <input type="hidden" name="double_points" value="0">
 
                         <input type="checkbox" name="double_points" id="double_points" value="1"
+                            class="form-checkbox h-5 w-5 text-red-600"
                             {{ old('double_points', $event->double_points) ? 'checked' : '' }}>
-                        <label for="double_points">Double Points</label>
+                        <label for="double_points" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                            Double Points
+                        </label>
                     </div>
                     
                     <div class="flex justify-center mt-4">
