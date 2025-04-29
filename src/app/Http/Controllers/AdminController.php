@@ -310,14 +310,23 @@ class AdminController extends Controller
         return view('dashboard.drivers.edit', compact('driver'));
     }
 
-    // Update player
+    // Update driver
     public function updateDriver(Request $request, Driver $driver)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'id'          => 'required|integer|unique:drivers,id,' . $driver->id,
+            'name'        => 'required|string|max:255',
+            'team'        => 'required|string|max:255',
+            'nationality' => 'required|string|max:255',
         ]);
 
-        $driver->update($request->only('name'));
+        // Update driver attributes: id (driver number), name, team, nationality
+        $driver->update([
+            'id'  => $request->input('id'),
+            'name' => $request->input('name'),
+            'team' => $request->input('team'),
+            'nationality' => $request->input('nationality'),
+        ]);
 
         return redirect()->route('dashboard.drivers')->with('success', 'Driver updated.');
     }

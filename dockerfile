@@ -14,7 +14,10 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     nano \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    libicu-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl 
 
 # Install Node.js (LTS) + npm
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \

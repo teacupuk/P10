@@ -18,6 +18,28 @@
                             class="form-input w-full dark:bg-gray-700 dark:text-white">
                     </div>
 
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Number</label>
+                        <input name="id" type="number" value="{{ old('id', $driver->id) }}"
+                               class="form-input w-full dark:bg-gray-700 dark:text-white">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Team</label>
+                        <input name="team" type="text" value="{{ old('team', $driver->team) }}"
+                               class="form-input w-full dark:bg-gray-700 dark:text-white">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="nationality" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Nationality
+                        </label>
+                        <x-country-select
+                            name="nationality"
+                            :selected="old('nationality', $driver->nationality)"
+                        />
+                    </div>
+
                     <div class="flex justify-center mt-4">
                         <button type="submit" class="px-4 py-2 text-sm font-medium text-white border border-[#111827] rounded hover:bg-gray-700 transition">
                             Save Driver
