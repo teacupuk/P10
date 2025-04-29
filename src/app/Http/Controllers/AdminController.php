@@ -346,12 +346,22 @@ class AdminController extends Controller
     public function storeDriver(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'id'          => 'required|integer|unique:drivers,id',
+            'name'        => 'required|string|max:255',
+            'team_id'     => 'required|integer|exists:teams,id',
+            'nationality' => 'required|string|max:255',
         ]);
 
-        Driver::create($request->only('name'));
+        Driver::create([
+            'id'          => $request->id,
+            'name'        => $request->name,
+            'team_id'     => $request->team_id,
+            'nationality' => $request->nationality,
+        ]);
 
-        return redirect()->route('dashboard.drivers')->with('success', 'Driver created.');
+        return redirect()
+            ->route('dashboard.drivers')
+            ->with('success', 'Driver created.');
     }
 
     // Delete player (archive instead of delete)
