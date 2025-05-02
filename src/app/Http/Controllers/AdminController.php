@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\Player;
+use App\Models\User;
 use App\Models\Driver; 
 use App\Models\Prediction;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Season;
 use App\Models\Team;
 
@@ -245,13 +247,46 @@ class AdminController extends Controller
     // Update player
     public function updatePlayer(Request $request, Player $player)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        // Base validation for player name
+        $rules = ['name' => 'required|string|max:255'];
 
-        $player->update($request->only('name'));
+        // If no linked user, require email & password
+        if (! $player->user) {
+            $rules['email']    = 'required|email|unique:users,email';
+            $rules['password'] = 'required|confirmed|min:8';
+        }
+        $data = $request->validate($rules);
 
-        return redirect()->route('dashboard.players')->with('success', 'Player updated.');
+        // Update player name
+        $player->name = $data['name'];
+
+        // Create and link a new User if none exists
+        if (! $player->user) {
+            $user = User::create([
+                'name'     => $data['name'],
+                'email'    => $data['email'],
+                'password' => Hash::make($data['password']),
+            ]);
+            $player->user()->associate($user);
+        } else {
+            // If user exists and change-password fields submitted, update password
+            if ($request->filled('new_password')) {
+                $request->validate([
+                    'new_password' => 'required|confirmed|min:8',
+                ]);
+                $player->user->update([
+                    'password' => Hash::make($request->input('new_password')),
+                ]);
+            }
+        }
+
+        // Save player changes (name and/or user_id)
+        $player->save();
+
+        // Redirect back to the player management screen with a success message
+        return redirect()
+            ->route('dashboard.players')
+            ->with('success', 'Player updated successfully.');
     }
 
     // Show form to create new player
