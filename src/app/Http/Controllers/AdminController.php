@@ -75,6 +75,7 @@ class AdminController extends Controller
         Event::create([
             'season_id'  => $request->season_id,
             'name'       => $request->name,
+            'country_code' => $request->country_code,
             'date'       => $request->date,
             'is_sprint'  => $request->boolean('is_sprint'),
             'double_points' => $request->boolean('double_points'),
@@ -118,6 +119,7 @@ class AdminController extends Controller
         $event->update([
             'season_id'  => $request->season_id,
             'name' => $request->input('name'),
+            'country_code' => $request->country_code,
             'date' => $request->input('date'),
             'is_sprint' => $request->boolean('is_sprint'),
             'double_points' => $request->boolean('double_points'),

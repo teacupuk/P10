@@ -11,6 +11,7 @@ class Event extends Model
     protected $fillable = [
         'season_id',
         'name',
+        'country_code',
         'date',
         'is_sprint',
         'double_points',

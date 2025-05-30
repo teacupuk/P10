@@ -8,9 +8,10 @@
     <div class="h-2" style="background-color: {{ $headerColor }};"></div>
 
     <div class="p-4 flex-1 flex flex-col">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            {{ $event->name }}
-        </h3>
+        <div class="flex items-center justify-between">
+            <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $event->name }}</span>
+            <span class="fi fi-{{ strtolower($event->country_code) }} fis mr-2"></span>
+        </div>
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">
             {{ $event->date->format('M j, Y') }}
         </p>

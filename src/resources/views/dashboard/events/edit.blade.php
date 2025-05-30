@@ -39,6 +39,16 @@
                     </div>
 
                     <div class="mb-4">
+                        <label for="country_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Country
+                        </label>
+                        <x-country-select
+                            name="country_code"
+                            :selected="old('country_code', $event->country_code)"
+                        />
+                    </div>
+
+                    <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
                         <input type="date" name="date" value="{{ old('date', $event->date->format('Y-m-d')) }}"
                                class="form-input w-full dark:bg-gray-700 dark:text-white border border-gray-300 rounded">
