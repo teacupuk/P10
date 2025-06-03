@@ -1,26 +1,24 @@
 <x-public-layout>
-  <div class="container my-3 px-3 px-md-4 pt-2" style="max-width: 960px;">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
     {{-- Header --}}
-    <section class="mb-5 text-center">
-      <h1 class="fs-3 fw-bold">Season {{ $season->id }}</h1>
-    </section>
+    <h1 class="text-2xl sm:text-3xl font-bold text-center text-gray-900 dark:text-white border-b-4 border-red-600 pb-2 mb-6 uppercase">Season {{ $season->id }}</h1>
 
     {{-- Season‐wide leaderboard --}}
-    <section class="mb-5">
-      <div class="table-responsive">
-        <table class="table table-sm table-f1 table-borderless">
-          <thead class="table-dark text-white">
+    <section class="mb-10">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-900 text-white">
             <tr>
-              <th>Player</th>
-              <th class="text-end">Points</th>
+              <th class="px-4 py-2 text-left text-sm font-medium">Player</th>
+              <th class="px-4 py-2 text-right text-sm font-medium">Points</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
             @foreach($players as $player)
               <tr>
-                <td class="fw-bold">{{ $player->name }}</td>
-                <td class="text-end fw-bold">{{ $player->season_points }}</td>
+                <td class="px-4 py-2 font-semibold text-gray-900 dark:text-gray-100">{{ $player->name }}</td>
+                <td class="px-4 py-2 text-right font-semibold text-gray-900 dark:text-gray-100">{{ $player->season_points }}</td>
               </tr>
             @endforeach
           </tbody>
@@ -28,58 +26,51 @@
       </div>
     </section>
 
-    <hr class="my-4">
-
     {{-- Full season event breakdown --}}
     <section id="event-breakdown">
-      <h2 class="fs-3 fw-bold border-bottom border-2 border-danger pb-2 mb-4">Race Breakdown</h2>
-      <div class="accordion" id="eventAccordion">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center text-gray-900 dark:text-white border-b-4 border-red-600 pb-2 mb-6 uppercase">Race Breakdown</h2>
+      <div class="space-y-4">
         @foreach($events as $index => $event)
-          <div class="accordion-item bg-white text-dark border-0 mb-3">
-              <h2 class="accordion-header" id="heading{{ $index }}">
-                  <button class="accordion-button collapsed bg-danger text-white fw-semibold border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}" aria-expanded="false" aria-controls="collapse{{ $index }}">
-                      {{ $event->name }} <span class="text-muted ms-2">({{ $event->date->format('M j, Y') }})</span>
-                  </button>
-              </h2>
-              <div id="collapse{{ $index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $index }}" data-bs-parent="#eventAccordion">
-                  <div class="accordion-body">
-                      <div class="table-responsive">
-                          <table class="table table-sm table-f1 table-borderless mb-0">
-                              <thead class="table-dark text-white">
-                                  <tr>
-                                      <th>Player</th>
-                                      <th class="text-end">Predicted Driver</th>
-                                      <th class="text-end">Points</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  @foreach(
-                                      $event->predictions->sortBy(function ($prediction) use ($event) {
-                                          return $event->qualifyingPositions
-                                              ->pluck('driver_id')
-                                              ->search($prediction->predicted_driver) ?? 999;
-                                      }) as $prediction)
-                                      <tr @if($prediction->points_awarded > 0) class="table-success fw-bold" @endif>
-                                          <td>{{ $prediction->player->name }}</td>
-                                          <td class="text-end text-info fw-semibold">
-                                              @php
-                                                  $driverName = App\Models\Driver::find($prediction->predicted_driver)?->name ?? $prediction->predicted_driver;
-                                                  $position = optional($event->qualifyingPositions->firstWhere('driver_id', $prediction->predicted_driver))->position;
-                                              @endphp
-                                              {{ $driverName }} <span class="text-muted">({{ $position ?? '?' }})</span>
-                                          </td>
-                                          <td class="text-end">{{ $prediction->points_awarded }}</td>
-                                      </tr>
-                                  @endforeach
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
+          <div x-data="{ open: false }" class="border rounded shadow-sm dark:border-gray-700">
+            <button @click="open = !open" class="w-full text-left px-4 py-3 bg-red-600 text-white font-semibold rounded-t">
+              {{ $event->name }} <span class="text-white text-opacity-75">({{ $event->date->format('M j, Y') }})</span>
+            </button>
+            <div x-show="open" x-collapse class="px-4 py-4 bg-white dark:bg-gray-800">
+              <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left text-gray-900 dark:text-gray-100">
+                  <thead class="bg-gray-900 text-white">
+                    <tr>
+                      <th class="px-4 py-2">Player</th>
+                      <th class="px-4 py-2 text-right">Predicted Driver</th>
+                      <th class="px-4 py-2 text-right">Points</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    @foreach(
+                      $event->predictions->sortBy(function ($prediction) use ($event) {
+                        return $event->qualifyingPositions
+                          ->pluck('driver_id')
+                          ->search($prediction->predicted_driver) ?? 999;
+                      }) as $prediction)
+                      <tr @if($prediction->points_awarded > 0) class="bg-green-100 dark:bg-green-800 font-bold" @endif>
+                        <td class="px-4 py-2">{{ $prediction->player->name }}</td>
+                        <td class="px-4 py-2 text-right text-blue-600 dark:text-blue-400 font-semibold">
+                          @php
+                            $driverName = App\Models\Driver::find($prediction->predicted_driver)?->name ?? $prediction->predicted_driver;
+                            $position = optional($event->qualifyingPositions->firstWhere('driver_id', $prediction->predicted_driver))->position;
+                          @endphp
+                          {{ $driverName }} <span class="text-gray-500">({{ $position ?? '?' }})</span>
+                        </td>
+                        <td class="px-4 py-2 text-right">{{ $prediction->points_awarded }}</td>
+                      </tr>
+                    @endforeach
+                  </tbody>
+                </table>
               </div>
+            </div>
           </div>
-      @endforeach
+        @endforeach
       </div>
     </section>
   </div>
-
 </x-public-layout>
