@@ -1,5 +1,62 @@
+/* Flag CSS */
 @import "../../node_modules/flag-icons/css/flag-icons.min.css";
+
+/* Font imports */
+@import url('https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom P10 styles */
+body {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.3px;
+}
+
+.accordion-button:not(.collapsed):hover,
+.accordion-button:hover {
+    background-color: #e10600 !important;
+    color: white !important;
+}
+
+.table-f1 {
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 6px;
+}
+
+.table-f1 thead {
+    background-color: #000;
+    color: #fff;
+    font-weight: 700;
+}
+
+.table-f1 thead th:first-child {
+    border-top-left-radius: 6px;
+}
+.table-f1 thead th:last-child {
+    border-top-right-radius: 6px;
+}
+
+.table-f1 tbody tr:nth-child(odd) {
+    background-color: #f8f8f8;
+}
+.table-f1 tbody tr:nth-child(even) {
+    background-color: #eeeeee;
+}
+
+.card,
+.accordion-item {
+    box-shadow: none !important;
+    border-radius: 0;
+}
+
+.table td,
+.table th {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+}

@@ -48,11 +48,7 @@
 
     <!-- Mobile menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden px-4 pb-4">
-        <div class="block pt-2 pb-3 space-y-1 text-white">
-            <x-responsive-nav-link :href="route('public.app')">
-                Leaderboard
-            </x-responsive-nav-link>
-        </div>
+        <a href="/" class="block py-2 text-white hover:underline">Leaderboard</a>
         <div class="mt-2">
             <div class="font-semibold">Seasons</div>
             <ul class="mt-1 space-y-1">
@@ -65,10 +61,6 @@
                 @endforeach
             </ul>
         </div>
-        <div class="block pt-2 pb-3 space-y-1 text-white">
-            <x-responsive-nav-link :href="route('public.rules')" :active="request()->routeIs('public.rules')">
-                Rules
-            </x-responsive-nav-link>
-        </div>
+        <a href="/rules" class="block mt-2 py-2 text-white hover:underline">Rules</a>
     </div>
 </nav>

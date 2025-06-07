@@ -83,36 +83,43 @@
     
 
     <script>
-        const ctx = document.getElementById('pointsChart').getContext('2d');
-        new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: @json($labels),
-            datasets: @json($datasets)
-        },
-        options: {
-            responsive: true,
-            plugins: {
-            legend: { position: 'bottom' },
-            tooltip: { mode: 'index', intersect: false }
-            },
-            interaction: {
-            mode: 'nearest',
-            axis: 'x',
-            intersect: false
-            },
-            scales: {
-            x: {
-                title: { display: true, text: 'Grand Prix' },
-                ticks: { maxRotation: 0, autoSkip: false }
-            },
-            y: {
-                title: { display: true, text: 'Cumulative Points' },
-                beginAtZero: true,
-                precision: 0
+        document.addEventListener('DOMContentLoaded', function () {
+            const canvas = document.getElementById('pointsChart');
+            if (canvas && window.Chart) {
+                const ctx = canvas.getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: @json($labels),
+                        datasets: @json($datasets)
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            tooltip: { mode: 'index', intersect: false }
+                        },
+                        interaction: {
+                            mode: 'nearest',
+                            axis: 'x',
+                            intersect: false
+                        },
+                        scales: {
+                            x: {
+                                title: { display: true, text: 'Grand Prix' },
+                                ticks: { maxRotation: 0, autoSkip: false }
+                            },
+                            y: {
+                                title: { display: true, text: 'Cumulative Points' },
+                                beginAtZero: true,
+                                precision: 0
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.warn('Chart.js or canvas not found.');
             }
-            }
-        }
         });
     </script>
 </x-public-layout>
