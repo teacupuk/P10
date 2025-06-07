@@ -1,0 +1,22 @@
+{
+  "name": "The P10 Game",
+  "short_name": "P10",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": "/",
+  "theme_color": "#e10600",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
