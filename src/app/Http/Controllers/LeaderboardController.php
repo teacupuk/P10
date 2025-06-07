@@ -14,7 +14,7 @@ class LeaderboardController extends Controller
     {
         $allSeasons = Season::get();
         $season = Season::where('active', true)->first();
-
+        
         // All players, sorted and filtered
         $players = Player::with(['predictions.event'])
             ->get()
@@ -37,41 +37,16 @@ class LeaderboardController extends Controller
             ->with(['predictions.player'])
             ->orderBy('date')
             ->get();
-
-        // Only the latest three events, for a separate “latest races” section
-        $recentEvents = Event::where('season_id', $season->id)
-            ->where('archived', false)
-            ->whereHas('predictions')
-            ->with(['predictions.player'])
-            ->latest('date')
-            ->take(3)
-            ->get()
-            ->sortBy('date');
-
-        // Build chart labels (names of all events)
-        $labels = $events->pluck('name');
-
-        // Build a dataset per player: cumulative points over all events
-        $datasets = $players->map(function ($player) use ($events) {
-            $sum = 0;
-            $data = [];
-            foreach ($events as $event) {
-                $prediction = $event->predictions->firstWhere('player_id', $player->id);
-                $points = $prediction?->points_awarded ?? 0;
-                $sum += $points;
-                $data[] = $sum;
-            }
-            return [
-                'label' => $player->name,
-                'data' => $data,
-                'fill' => false,
-                'borderColor' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
-                'tension' => 0.3,
-            ];
-        })->toArray();
+        
+        // Ensure you define the next upcoming race
+        $nextEvent = Event::where('season_id', $season->id)
+                        ->where('archived', false)
+                        ->whereDate('date', '>=', now())
+                        ->orderBy('date')
+                        ->first();
 
         // Pass recentEvents for latest races display
-        return view('public.app', compact('players', 'events', 'labels', 'datasets', 'recentEvents', 'allSeasons', 'season'));
+        return view('public.app', compact('players', 'events', 'nextEvent', 'allSeasons', 'season'));
     }
 
     public function showSeason(Season $season)

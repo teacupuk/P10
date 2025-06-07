@@ -28,5 +28,9 @@
         <p class="text-sm text-gray-500 dark:text-gray-400">
             All decisions are final, and no edits can be made after the event's qualifying results are locked in.
         </p>
+        
+        <footer class="mt-10 text-center text-sm text-gray-500">
+            <p>Built lovingly in Banbury · Last updated {{ now()->format('M Y') }} · <a href="{{ route('dashboard.app') }}">Dashboard</a></p>
+        </footer>
     </div>
 </x-public-layout>
