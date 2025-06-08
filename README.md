@@ -1,6 +1,8 @@
-# 🏁 The P10 Game
+<img src="src/public/favicon.svg" alt="logo" width="100"/>
 
-Welcome to the **P10 Game**, a fun challenge where players predict who will qualify **P10** for every F1 race and sprint of the 2025 season!
+# P10 Game
+
+This is the P10 Game Website, a silly game where players predict the driver who will qualify P10 for each race in the Formula 1 Season.
 
 ## 🎯 Game Objective
 
